@@ -1,5 +1,5 @@
 import "./App.css";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import app from "./firebase.init";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form } from "react-bootstrap";
@@ -56,6 +56,7 @@ function App() {
           console.log(user);
           setEmail("");
           setPassword("");
+          emailVerification()
         })
         .catch((error) => {
           console.error(error);
@@ -65,6 +66,16 @@ function App() {
     event.preventDefault();
   };
 
+  const handlePasswordReset=()=>{
+    
+  }
+
+  const emailVerification =()=>{
+    sendEmailVerification(auth.currentUser)
+    .then(()=>{
+      console.log('sent');
+    })
+  }
   return (
     <div>
       <div className="registration w-50 mx-auto mt-2">
@@ -114,6 +125,9 @@ function App() {
             <Form.Check type="checkbox" label="Already Have An Account?" />
           </Form.Group>
 
+          
+          <Button onClick={handlePasswordReset} variant="link">Forget Password?</Button>
+          <br />
           <Button variant="primary" type="submit">
             {register ? "Login" : "Register"}
           </Button>
