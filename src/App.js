@@ -1,20 +1,26 @@
 import "./App.css";
-import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import app from "./firebase.init";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form } from "react-bootstrap";
+import { useState } from "react";
 
 const auth = getAuth(app);
 
+
 function App() {
+
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  createUserWithEmailAndPassword(auth, email, password)
   const handleEmail = (event) => {
-    console.log(event.target.value);
+    setEmail(event.target.value);
   };
   const handlePassword = (event) => {
-    console.log(event.target.value);
+    setPassword(event.target.value);
   };
   const handleSubmited = (event) => {
-    console.log("clicked");
+    console.log(event);
     event.preventDefault();
   };
   return (
