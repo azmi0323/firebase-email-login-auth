@@ -13,18 +13,31 @@ function App() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
 
-  createUserWithEmailAndPassword(auth, email, password)
+  
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
+
+  
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
+
+
   const handleSubmit = (event) => {
-    console.log('submited');
+    createUserWithEmailAndPassword(auth, email, password)
+    .then(result=>{
+      const user = result.user;
+      console.log(user);
+    })
+    .catch(error=>{
+      console.error(error);
+    })
     event.preventDefault();
   };
+
+
   return (
     <div>
       <div className="registration w-50 mx-auto mt-2">
