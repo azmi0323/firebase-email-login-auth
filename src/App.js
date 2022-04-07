@@ -1,5 +1,5 @@
 import "./App.css";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "./firebase.init";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form } from "react-bootstrap";
@@ -12,20 +12,19 @@ function App() {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
-  const [register,setRegister]=useState(false)
+  const [register, setRegister] = useState(false);
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
 
-
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleRegisterChange =(event)=>{
-    console.log(event.target.checked)
-  }
+  const handleRegisterChange = (event) => {
+    setRegister(event.target.checked);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -40,24 +39,38 @@ function App() {
     setValidated(true);
     setError("");
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+    if (register) {
+      signInWithEmailAndPassword(auth,email,password)
+      .then(result=>{
         const user = result.user;
         console.log(user);
-        setEmail("");
-        setPassword("");
       })
-      .catch((error) => {
+      .catch(error=>{
         console.error(error);
         setError(error.message)
-      });
+      })
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+          setEmail("");
+          setPassword("");
+        })
+        .catch((error) => {
+          console.error(error);
+          setError(error.message);
+        });
+    }
     event.preventDefault();
   };
 
   return (
     <div>
       <div className="registration w-50 mx-auto mt-2">
-        <h2 className="text-primary">Please Register!!</h2>
+        <h2 className="text-primary">
+          Please {register ? "Login" : "Register"}!!
+        </h2>
         <Form
           noValidate
           validated={validated}
@@ -93,12 +106,16 @@ function App() {
             </Form.Control.Feedback>
           </Form.Group>
           <p className="text-danger">{error}</p>
-          <Form.Group onChange={handleRegisterChange} className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group
+            onChange={handleRegisterChange}
+            className="mb-3"
+            controlId="formBasicCheckbox"
+          >
             <Form.Check type="checkbox" label="Already Have An Account?" />
           </Form.Group>
 
           <Button variant="primary" type="submit">
-            Register
+            {register ? "Login" : "Register"}
           </Button>
         </Form>
       </div>
