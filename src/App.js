@@ -20,6 +20,7 @@ function App() {
   const [error, setError] = useState("");
   const [register, setRegister] = useState(false);
   const [login, setLogin] = useState("");
+  const [registerd, registered] = useState("");
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -53,7 +54,8 @@ function App() {
           console.log(user);
           setEmail("");
           setPassword("");
-          setLogin('Successfully Log In Boss!!!!!!!!')
+          setLogin("Successfully Log In Boss!!!!!!!!");
+          setRegister('')
         })
         .catch((error) => {
           console.error(error);
@@ -66,6 +68,8 @@ function App() {
           console.log(user);
           setEmail("");
           setPassword("");
+          registered("Boss Register Hoye Geche!!!!!!!!");
+          setLogin('')
           emailVerification();
         })
         .catch((error) => {
@@ -91,6 +95,7 @@ function App() {
     <div>
       <div className="registration w-50 mx-auto mt-2">
         <h2 className="text-success">{login}</h2>
+        <h2 className="text-success">{registerd}</h2>
         <h2 className="text-primary">
           Please {register ? "Login" : "Register"}!!
         </h2>
