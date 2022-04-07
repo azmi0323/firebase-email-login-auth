@@ -19,6 +19,7 @@ function App() {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
   const [register, setRegister] = useState(false);
+  const [login, setLogin] = useState("");
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -50,6 +51,9 @@ function App() {
         .then((result) => {
           const user = result.user;
           console.log(user);
+          setEmail("");
+          setPassword("");
+          setLogin('Successfully Log In Boss!!!!!!!!')
         })
         .catch((error) => {
           console.error(error);
@@ -73,10 +77,9 @@ function App() {
   };
 
   const handlePasswordReset = () => {
-    sendPasswordResetEmail(auth, email)
-    .then(()=>{
-      console.log('email sent');
-    })
+    sendPasswordResetEmail(auth, email).then(() => {
+      console.log("email sent");
+    });
   };
 
   const emailVerification = () => {
@@ -87,6 +90,7 @@ function App() {
   return (
     <div>
       <div className="registration w-50 mx-auto mt-2">
+        <h2 className="text-success">{login}</h2>
         <h2 className="text-primary">
           Please {register ? "Login" : "Register"}!!
         </h2>
