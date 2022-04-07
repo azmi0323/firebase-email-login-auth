@@ -12,15 +12,20 @@ function App() {
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
+  const [register,setRegister]=useState(false)
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
 
+
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
 
+  const handleRegisterChange =(event)=>{
+    console.log(event.target.checked)
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -29,19 +34,22 @@ function App() {
       return;
     }
     if (!/(?=.*[A-Z])/.test(password)) {
-      setError('password should contain at least one uppercase character')
+      setError("password should contain at least one uppercase character");
       return;
     }
     setValidated(true);
-    setError('')
+    setError("");
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
+        setEmail("");
+        setPassword("");
       })
       .catch((error) => {
         console.error(error);
+        setError(error.message)
       });
     event.preventDefault();
   };
@@ -85,12 +93,12 @@ function App() {
             </Form.Control.Feedback>
           </Form.Group>
           <p className="text-danger">{error}</p>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
+          <Form.Group onChange={handleRegisterChange} className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Already Have An Account?" />
           </Form.Group>
-          
+
           <Button variant="primary" type="submit">
-            Submit
+            Register
           </Button>
         </Form>
       </div>
